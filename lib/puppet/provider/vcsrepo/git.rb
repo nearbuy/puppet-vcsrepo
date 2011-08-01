@@ -190,10 +190,8 @@ Puppet::Type.type(:vcsrepo).provide(:git, :parent => Puppet::Provider::Vcsrepo) 
   def checkout_or_reset(revision = @resource.value(:revision))
     if local_branch_revision?
       reset(revision)
-    elsif tag_revision?
+    elsif tag_revision? || remote_branch_revision?
       at_path { git_with_identity('checkout', revision) }
-    elsif remote_branch_revision?
-      at_path { git_with_identity('checkout', '-b', revision, '--track', "origin/#{revision}") }
     end
   end
 
